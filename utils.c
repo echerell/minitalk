@@ -6,7 +6,7 @@
 /*   By: echerell <echerell@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 19:53:41 by echerell          #+#    #+#             */
-/*   Updated: 2021/10/07 23:59:50 by echerell         ###   ########.fr       */
+/*   Updated: 2021/10/09 18:06:49 by echerell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,6 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	if (s)
 		write(fd, s, ft_strlen(s));
-}
-
-void	ft_bzero(void *ptr, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		*(unsigned char *)(ptr + i) = '\0';
-		i++;
-	}
 }
 
 int	ft_atoi(const char *nptr)

@@ -11,14 +11,16 @@ SERVER_OBJ = server.o
 CLIENT_OBJ = client.o
 UTILS_OBJ = utils.o
 
+.PHONY: all clean fclean re
+
 all: $(SERVER) $(CLIENT)
 
 $(SERVER):
-	$(CC) $(CFLAGS) -c $(SERVER_SRC) $(UTILS_SRC)
+	$(CC) $(CFLAGS) -c $(SERVER_SRC) $(UTILS_SRC) -I.
 	$(CC) $(SERVER_OBJ) $(UTILS_OBJ) -o $(SERVER)
 
 $(CLIENT):
-	$(CC) $(CFLAGS) -c $(CLIENT_SRC) $(UTILS_SRC)
+	$(CC) $(CFLAGS) -c $(CLIENT_SRC) $(UTILS_SRC) -I.
 	$(CC) $(CLIENT_OBJ) $(UTILS_OBJ) -o $(CLIENT)
 
 clean:

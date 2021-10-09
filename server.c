@@ -6,7 +6,7 @@
 /*   By: echerell <echerell@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 18:25:16 by echerell          #+#    #+#             */
-/*   Updated: 2021/10/08 01:07:49 by echerell         ###   ########.fr       */
+/*   Updated: 2021/10/09 18:59:30 by echerell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,41 +33,10 @@ static void	ft_putnbr_fd(int n, int fd)
 		ft_putchar_fd(rec % 10 + '0', fd);
 }
 
-static char	*cat_byte(char *msg, char c)
-{
-	char	*new;
-	int		i;
-
-	i = 0;
-	new = (char *)malloc((ft_strlen(msg) + 2) * sizeof(char));
-	if (!new)
-	{
-		if (msg)
-			free(msg);
-		exit(EXIT_FAILURE);
-	}
-	if (!msg)
-	{
-		new[0] = c;
-		new[1] = '\0';
-		return (new);
-	}
-	while (msg[i])
-	{
-		new[i] = msg[i];
-		i++;
-	}
-	new[i] = c;
-	new[i + 1] = '\0';
-	free(msg);
-	return (new);
-}
-
 static void	take_msg(int signum, siginfo_t *info, void *empty)
 {
-	static char	*msg;
-	static int	bit_shift;
-	static int	byte_info;
+	static int				bit_shift;
+	static unsigned char	byte_info;
 
 	(void)empty;
 	if (signum == SIGUSR1)
@@ -75,13 +44,10 @@ static void	take_msg(int signum, siginfo_t *info, void *empty)
 	if (++bit_shift == 8)
 	{
 		if (byte_info)
-			msg = cat_byte(msg, byte_info);
+			ft_putchar_fd(byte_info, STDOUT_FILENO);
 		else
 		{
-			ft_putstr_fd(msg, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
-			free(msg);
-			msg = NULL;
 			kill(info->si_pid, SIGUSR2);
 		}
 		bit_shift = 0;
@@ -89,12 +55,17 @@ static void	take_msg(int signum, siginfo_t *info, void *empty)
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	struct sigaction	act;
 	sigset_t			mask;
 
-	ft_bzero(&act, sizeof(act));
+	(void)argv;
+	if (argc != 1)
+	{
+		ft_putstr_fd("Server runs without any arguments\n", STDOUT_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	sigemptyset(&mask);
 	sigaddset(&mask, SIGUSR1);
 	sigaddset(&mask, SIGUSR2);
