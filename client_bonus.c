@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: echerell <echerell@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 16:43:27 by echerell          #+#    #+#             */
-/*   Updated: 2021/10/10 16:43:57 by echerell         ###   ########.fr       */
+/*   Created: 2021/10/07 21:38:30 by echerell          #+#    #+#             */
+/*   Updated: 2021/10/10 16:34:29 by echerell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	received(int signum)
+{
+	(void)signum;
+}
 
 void	send_msg(int pid, unsigned char c)
 {
@@ -29,7 +34,8 @@ void	send_msg(int pid, unsigned char c)
 			if (kill(pid, SIGUSR2) == -1)
 				error(SIGNAL_ERR);
 		}
-		usleep(100);
+		pause();
+		usleep(10);
 	}
 }
 
@@ -46,6 +52,7 @@ int	main(int argc, char **argv)
 	server_pid = ft_atoi(argv[1]);
 	if (server_pid == 0)
 		error(PID_ERR);
+	signal(SIGUSR2, received);
 	while (argv[2][i])
 	{
 		send_msg(server_pid, argv[2][i]);

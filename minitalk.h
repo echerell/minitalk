@@ -6,7 +6,7 @@
 /*   By: echerell <echerell@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 19:56:28 by echerell          #+#    #+#             */
-/*   Updated: 2021/10/09 18:45:01 by echerell         ###   ########.fr       */
+/*   Updated: 2021/10/10 16:41:25 by echerell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@ enum	e_errors
 {
 	FORMAT_ERR,
 	PID_ERR,
-	SIGNAL_ERR
+	SIGNAL_ERR,
+	EMPTY_ERR,
+	SERVER_ERR
 };
 
 size_t	ft_strlen(const char *s);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
-void	ft_bzero(void *ptr, size_t n);
 int		ft_atoi(const char *nptr);
+void	error(int err);
 
 #endif

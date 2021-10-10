@@ -6,7 +6,7 @@
 /*   By: echerell <echerell@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 19:53:41 by echerell          #+#    #+#             */
-/*   Updated: 2021/10/09 18:06:49 by echerell         ###   ########.fr       */
+/*   Updated: 2021/10/10 16:41:20 by echerell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,25 @@ int	ft_atoi(const char *nptr)
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		n = (n * 10) + (nptr[i++] - '0');
-		if (n < 0 && sign == 1)
-			return (-1);
-		if (n < 0 && sign == -1)
+		if (n < 0 && (sign == -1 || sign == 1))
 			return (0);
 	}
+	if ((nptr[i] < '0' || nptr[i] > '9') && nptr[i])
+		return (0);
 	return ((int)(n * sign));
+}
+
+void	error(int err)
+{
+	if (err == FORMAT_ERR)
+		ft_putstr_fd("Wrong format. format: <server_pid> <message>\n", 1);
+	else if (err == PID_ERR)
+		ft_putstr_fd("Wrong server pid\n", STDOUT_FILENO);
+	else if (err == SIGNAL_ERR)
+		ft_putstr_fd("Signal cannot reach the server\n", STDOUT_FILENO);
+	else if (err == EMPTY_ERR)
+		ft_putstr_fd("Client should send at least one symbol\n", 1);
+	else if (err == SERVER_ERR)
+		ft_putstr_fd("Server runs without any arguments\n", STDOUT_FILENO);
+	exit(EXIT_FAILURE);
 }
